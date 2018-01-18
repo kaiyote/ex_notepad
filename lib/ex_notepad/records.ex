@@ -8,6 +8,7 @@ defmodule ExNotepad.Records do
   end
 
   @type config :: config()
+  @type font :: font()
   @type text_ctrl :: :wxStyledTextCtrl.wxStyledTextCtrl()
 
   def app_name, do: "ExNotepad"

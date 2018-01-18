@@ -1,6 +1,15 @@
+-record(font,{name,style,weight,size}).
+
+-record(window, {
+    x       :: integer(),
+    y       :: integer(),
+    width   :: non_neg_integer(),
+    height  :: non_neg_integer()
+}).
+
 -record(config, {
-    window             :: enotepad_wx:window() | 'undefined',
+    window             :: window() | 'undefined',
     word_wrap  = false :: boolean(),
     status_bar = false :: boolean(),
-    font               :: enotepad_font:font() | 'undefined'
+    font               :: font() | 'undefined'
 }).
