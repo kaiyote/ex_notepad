@@ -3,7 +3,7 @@ defmodule ExNotepad.Menu do
 
   import ExNotepad.Records
 
-  @type menu_item_desc :: {integer(), String.t()} |
+  @opaque menu_item_desc :: {integer(), String.t()} |
                           {integer(), String.t(), :check | :disabled} |
                           :separator
 
