@@ -13,3 +13,8 @@
     status_bar = false :: boolean(),
     font               :: font() | 'undefined'
 }).
+
+-record(statusbar, {
+    control :: wxStatusBar:wxStatusBar(),
+    frame   :: wxFrame:wxFrame()
+}).
