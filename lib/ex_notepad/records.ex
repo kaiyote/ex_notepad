@@ -12,6 +12,7 @@ defmodule ExNotepad.Records do
   @type statusbar :: statusbar()
   @type wxFindDialogEvent_ex :: wxFindDialogEvent_ex()
   @type text_ctrl :: :wxStyledTextCtrl.wxStyledTextCtrl()
+  @type fr_data :: :wxFindReplaceData.wxFindReplaceData()
 
   def app_name, do: "ExNotepad"
   def config_file, do: "exconfig.cfg"
