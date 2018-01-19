@@ -1,20 +1,13 @@
 defmodule ExNotepad.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
   @moduledoc false
 
   use Application
 
-  def start(_type, _args) do
-    # List all child processes to be supervised
-    children = [
-      # Starts a worker by calling: ExNotepad.Worker.start_link(arg)
-      # {ExNotepad.Worker, arg},
-    ]
+  @spec start(Application.start_type(), any()) :: {:ok, pid()}
+                                                | {:ok, pid(), any()}
+                                                | {:error, any()}
+  def start(_type, _args), do: ExNotepad.Supervisor.start_link()
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: ExNotepad.Supervisor]
-    Supervisor.start_link(children, opts)
-  end
+  @spec stop(any()) :: :ok
+  def stop(_state), do: :ok
 end

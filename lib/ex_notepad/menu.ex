@@ -3,9 +3,9 @@ defmodule ExNotepad.Menu do
 
   import ExNotepad.Records
 
-  @opaque menu_item_desc :: {integer(), String.t()} |
-                          {integer(), String.t(), :check | :disabled} |
-                          :separator
+  @opaque menu_item_desc :: {integer(), String.t()}
+                          | {integer(), String.t(), :check | :disabled}
+                          | :separator
 
   @spec create(:wxFrame.wxFrame()) :: :wxMenuBar.wxMenuBar()
   def create(frame) do
