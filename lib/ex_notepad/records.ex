@@ -10,6 +10,7 @@ defmodule ExNotepad.Records do
   @type config :: config()
   @type font :: font()
   @type statusbar :: statusbar()
+  @type wxFindDialogEvent_ex :: wxFindDialogEvent_ex()
   @type text_ctrl :: :wxStyledTextCtrl.wxStyledTextCtrl()
 
   def app_name, do: "ExNotepad"

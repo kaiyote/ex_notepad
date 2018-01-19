@@ -18,3 +18,5 @@
     control :: wxStatusBar:wxStatusBar(),
     frame   :: wxFrame:wxFrame()
 }).
+
+-record(wxFindDialogEvent_ex, {type, find_string, replace_string, flags}).
