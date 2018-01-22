@@ -1,5 +1,6 @@
 defmodule ExNotepad.Text do
   @moduledoc false
+  @dialyzer {:nowarn_function, 'MACRO-assign': 4}
 
   use Bitwise, only_operators: true
 
@@ -165,10 +166,61 @@ defmodule ExNotepad.Text do
   @ctrl :wx_const.wxSTC_SCMOD_CTRL
   @ctrlshift @shift ||| @ctrl
 
-  @spec configure_keys(R.text_ctrl()) :: :ok
-  defp configure_keys(t) do
-    :wxStyledTextCtrl.cmdKeyClearAll t
+  defmacrop assign(key, meta, cmd) do
+    quote do
+      :wxStyledTextCtrl.cmdKeyAssign var!(text_ctrl), unquote(key), unquote(meta), unquote(cmd)
+    end
+  end
 
-    :wxStyledTextCtrl.cmdKeyAssign t, :wx_const.wxSTC_KEY_UP, @none, :wx_const.wxSTC_CMD_LINEUP
+  @spec configure_keys(R.text_ctrl()) :: :ok
+  defp configure_keys(text_ctrl) do
+    :wxStyledTextCtrl.cmdKeyClearAll text_ctrl
+
+    assign :wx_const.wxSTC_KEY_UP, @none, :wx_const.wxSTC_CMD_LINEUP
+    assign :wx_const.wxSTC_KEY_DOWN, @none, :wx_const.wxSTC_CMD_LINEDOWN
+    assign :wx_const.wxSTC_KEY_LEFT, @none, :wx_const.wxSTC_CMD_CHARLEFT
+    assign :wx_const.wxSTC_KEY_RIGHT, @none, :wx_const.wxSTC_CMD_CHARRIGHT
+    assign :wx_const.wxSTC_KEY_LEFT, @ctrl, :wx_const.wxSTC_CMD_WORDLEFT
+    assign :wx_const.wxSTC_KEY_RIGHT, @ctrl, :wx_const.wxSTC_CMD_WORDRIGHT
+    assign :wx_const.wxSTC_KEY_UP, @shift, :wx_const.wxSTC_CMD_LINEUPEXTEND
+    assign :wx_const.wxSTC_KEY_DOWN, @shift, :wx_const.wxSTC_CMD_LINEDOWNEXTEND
+    assign :wx_const.wxSTC_KEY_LEFT, @shift, :wx_const.wxSTC_CMD_CHARLEFTEXTEND
+    assign :wx_const.wxSTC_KEY_RIGHT, @shift, :wx_const.wxSTC_CMD_CHARRIGHTEXTEND
+
+    assign :wx_const.wxSTC_KEY_LEFT, @ctrlshift, :wx_const.wxSTC_CMD_WORDLEFTEXTEND
+    assign :wx_const.wxSTC_KEY_RIGHT, @ctrlshift, :wx_const.wxSTC_CMD_WORDRIGHTEXTEND
+
+    assign :wx_const.wxSTC_KEY_PRIOR, @none, :wx_const.wxSTC_CMD_PAGEUP
+    assign :wx_const.wxSTC_KEY_NEXT, @none, :wx_const.wxSTC_CMD_PAGEDOWN
+
+    assign :wx_const.wxSTC_KEY_PRIOR, @shift, :wx_const.wxSTC_CMD_PAGEUPEXTEND
+    assign :wx_const.wxSTC_KEY_NEXT, @shift, :wx_const.wxSTC_CMD_PAGEDOWNEXTEND
+
+    assign :wx_const.wxSTC_KEY_HOME, @none, :wx_const.wxSTC_CMD_HOME
+    assign :wx_const.wxSTC_KEY_END, @none, :wx_const.wxSTC_CMD_LINEEND
+
+    assign :wx_const.wxSTC_KEY_HOME, @shift, :wx_const.wxSTC_CMD_HOMEEXTEND
+    assign :wx_const.wxSTC_KEY_END, @shift, :wx_const.wxSTC_CMD_LINEENDEXTEND
+
+    assign :wx_const.wxSTC_KEY_HOME, @ctrl, :wx_const.wxSTC_CMD_DOCUMENTSTART
+    assign :wx_const.wxSTC_KEY_END, @ctrl, :wx_const.wxSTC_CMD_DOCUMENTEND
+
+    assign :wx_const.wxSTC_KEY_HOME, @ctrlshift, :wx_const.wxSTC_CMD_DOCUMENTSTARTEXTEND
+    assign :wx_const.wxSTC_KEY_END, @ctrlshift, :wx_const.wxSTC_CMD_DOCUMENTENDEXTEND
+
+    assign :wx_const.wxSTC_KEY_DELETE, @none, :wx_const.wxSTC_CMD_CLEAR
+    assign :wx_const.wxSTC_KEY_BACK, @none, :wx_const.wxSTC_CMD_DELETEBACK
+    assign :wx_const.wxSTC_KEY_DELETE, @shift, :wx_const.wxSTC_CMD_DELETEBACK
+    assign :wx_const.wxSTC_KEY_DELETE, @ctrl, :wx_const.wxSTC_CMD_DELLINERIGHT
+
+    assign :wx_const.wxSTC_KEY_INSERT, @ctrl, :wx_const.wxSTC_CMD_COPY
+    assign :wx_const.wxSTC_KEY_INSERT, @shift, :wx_const.wxSTC_CMD_PASTE
+
+    assign ?J, @ctrl, :wx_const.wxSTC_CMD_NEWLINE
+    assign ?M, @ctrl, :wx_const.wxSTC_CMD_NEWLINE
+    assign ?I, @ctrl, :wx_const.wxSTC_CMD_TAB
+
+    assign :wx_const.wxSTC_KEY_ESCAPE, @none, :wx_const.wxSTC_CMD_CANCEL
+    assign :wx_const.wxSTC_KEY_ESCAPE, @shift, :wx_const.wxSTC_CMD_CANCEL
   end
 end
