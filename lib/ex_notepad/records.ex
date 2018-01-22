@@ -13,6 +13,12 @@ defmodule ExNotepad.Records do
   @type wxFindDialogEvent_ex :: wxFindDialogEvent_ex()
   @type text_ctrl :: :wxStyledTextCtrl.wxStyledTextCtrl()
   @type fr_data :: :wxFindReplaceData.wxFindReplaceData()
+  @type wxFindReplaceDialog_ex :: :wxDialog.wxDialog()
+  @type listener :: pid() | nil
+  @type fr_event :: :find | :find_next | :replace | :replace_all | :close
+  @type ctrl :: ctrl()
+  @type ctrlstate :: ctrlstate()
+  @type state :: state()
 
   def app_name, do: "ExNotepad"
   def config_file, do: "exconfig.cfg"
