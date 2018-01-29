@@ -337,7 +337,89 @@ defmodule ExNotepad.Wx.FindReplaceDialog do
   end
 
   @spec notify_event(R.fr_event(), R.listener(), R.ctrl(), R.fr_data) :: :ok
-  defp notify_event(_, _, _, _) do
-    :ok
+  defp notify_event(event, pid, _, _) when pid in [nil, :undefined] do
+    IO.puts "find_replace_dialog: event #{event} lost in oblivion"
+  end
+  defp notify_event(:find, pid, controls, frdata) do
+    control_state = get_controls_state controls
+    unless R.ctrlstate(control_state, :find) == '' do
+      case is_same_find_condition control_state, frdata do
+        false ->
+          update_find_replace_data frdata, control_state
+          send_event :find, pid, R.ctrl(controls, :dialog), control_state
+        true ->
+          send_event :find_next, pid, R.ctrl(controls, :dialog), control_state
+      end
+    end
+  end
+  defp notify_event(:replace, pid, controls, frdata) do
+    control_state = get_controls_state controls
+    update_find_replace_data frdata, control_state
+    send_event :replace, pid, R.ctrl(controls, :dialog), control_state
+  end
+  defp notify_event(:replace_all, pid, controls, frdata) do
+    control_state = get_controls_state controls
+    update_find_replace_data frdata, control_state
+    send_event :replace_all, pid, R.ctrl(controls, :dialog), control_state
+  end
+  defp notify_event(:close, pid, controls, _) do
+    send_event :close, pid, R.ctrl(controls, :dialog), nil
+  end
+
+  @spec send_event(R.fr_event(), pid(), :wxDialog.wxDialog(), R.ctrlstate() | R.missing()) :: any()
+  defp send_event(:close, pid, dialog, _) do
+    event_obj = R.wxFindDialogEvent_ex type: :close
+    send pid, wx(id: -1, obj: dialog, event: event_obj, userData: [])
+  end
+  defp send_event(event_name, pid, dialog, control_state) do
+    event_obj = R.wxFindDialogEvent_ex type: event_name,
+                                       find_string: R.ctrlstate(control_state, :find),
+                                       replace_string: R.ctrlstate(control_state, :replace),
+                                       flags: R.ctrlstate(control_state, :flags)
+    send pid, wx(id: -1, obj: dialog, event: event_obj, userData: [])
+  end
+
+  @spec update_find_replace_data(R.fr_data(), R.ctrlstate()) :: :ok
+  defp update_find_replace_data(frdata, control_state) do
+    :wxFindReplaceData.setFindString frdata, R.ctrlstate(control_state, :find)
+    :wxFindReplaceData.setReplaceString frdata, R.ctrlstate(control_state, :replace)
+    :wxFindReplaceData.setFlags frdata, R.ctrlstate(control_state, :flags)
+  end
+
+  @spec get_replace_string(R.missing() | :wxTextCtrl.wxTextCtrl()) :: String.t()
+  defp get_replace_string(:undefined), do: ""
+  defp get_replace_string(nil), do: ""
+  defp get_replace_string(ctrl), do: :wxTextCtrl.getValue ctrl
+
+  @spec get_flags(R.ctrl()) :: integer()
+  defp get_flags(controls) do
+    get_flag(:wx_const.wxFR_DOWN, :wxRadioButton, R.ctrl(controls, :down_radio)) |||
+    get_flag(:wx_const.wxFR_WHOLEWORD, :wxCheckBox, R.ctrl(controls, :whole_word_checkbox)) |||
+    get_flag(:wx_const.wxFR_MATCHCASE, :wxCheckBox, R.ctrl(controls, :match_case_checkbox))
+  end
+
+  @wx_fr_down :wx_const.wxFR_DOWN
+
+  @spec get_flag(integer(), :wxRadioButton | :wxCheckBox, :wxControl.wxControl()) :: integer()
+  defp get_flag(@wx_fr_down, :wxRadioButton, :undefined), do: 1
+  defp get_flag(_, _, :undefined), do: 0
+  defp get_flag(value, mod, ctrl) do
+    case mod.getValue ctrl do
+      true -> value
+      false -> 0
+    end
+  end
+
+  @spec get_controls_state(R.ctrl()) :: R.ctrlstate()
+  defp get_controls_state(controls) do
+    R.ctrlstate find: :wxTextCtrl.getValue(R.ctrl(controls, :find_box)),
+                replace: get_replace_string(R.ctrl(controls, :replace_box)),
+                flags: get_flags(controls)
+  end
+
+  @spec is_same_find_condition(R.ctrlstate(), R.fr_data()) :: boolean()
+  defp is_same_find_condition(R.ctrlstate(find: find_string, flags: flags), frdata) do
+    find_string === :wxFindReplaceData.getFindString(frdata) and
+    flags === :wxFindReplaceData.getFlags(frdata)
   end
 end
