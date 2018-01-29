@@ -20,6 +20,8 @@ defmodule ExNotepad.Records do
   @type ctrlstate :: ctrlstate()
   @type state :: state()
   @type missing :: :undefined | nil
+  @type window :: window()
+  @type wx_state() :: wx_state()
 
   def app_name, do: "ExNotepad"
   def config_file, do: "exconfig.cfg"

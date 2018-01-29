@@ -48,3 +48,21 @@
     controls    :: ctrl(),
     frdata      :: fr_data()
 }).
+
+-record(wx_state, {
+    frame      :: wxFrame:wxFrame(),
+    textctrl   :: wxStyledTextCtrl:wxStyledTextCtrl(),
+    menu       :: wxMenuBar:wxMenuBar(),
+    statusbar  :: enotepad_statusbar:statusbar(),
+    font       :: wxFont:wxFont(),
+    print      :: enotepad_print:enotepad_print(),
+    fr_data    :: wxFindReplaceData:wxFindReplaceData() | 'undefined',
+    fr_dialog  :: wxFindReplaceDialog_ex:wxFindReplaceDialog_ex() | 'undefined',
+
+    filename                :: string() | 'undefined',
+    select_start = -1       :: integer(),
+    select_end = -1         :: integer(),
+    is_selecting = false    :: boolean(),
+    position = -1           :: integer(),
+    empty_state = true      :: boolean()
+}).
