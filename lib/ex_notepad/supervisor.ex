@@ -4,7 +4,7 @@ defmodule ExNotepad.Supervisor do
   use Supervisor
 
   @spec start_link() :: {:ok, pid()} | :ignore | {:error, any()}
-  def start_link, do: Supervisor.start_link __MODULE__, __MODULE__, []
+  def start_link, do: Supervisor.start_link __MODULE__, []
 
   @spec init([]) :: {:ok, {:supervisor.sup_flags(), [Supervisor.child_spec()]}}
   def init([]) do
