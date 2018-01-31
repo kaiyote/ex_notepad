@@ -28,7 +28,7 @@ defmodule ExNotepad.Config do
 
   @spec config_check(R.config()) :: R.config()
   defp config_check(R.config() = c)
-    when is_boolean(R.config(c, :word_wrap)) and is_boolean(R.config(c, :status_bar)) do
+  when is_boolean(R.config(c, :word_wrap)) and is_boolean(R.config(c, :status_bar)) do
 
     R.config c, window: Wx.config_check(R.config(c, :window)),
                 font: Font.config_check(R.config(c, :font))
