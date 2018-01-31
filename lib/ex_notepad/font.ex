@@ -4,8 +4,8 @@ defmodule ExNotepad.Font do
   require ExNotepad.Records
   alias ExNotepad.Records, as: R
 
-  @spec load(R.font() | nil) :: :wxFont.wxFont() | nil
-  def load(nil), do: nil
+  @spec load(R.font() | R.missing()) :: :wxFont.wxFont() | nil
+  def load(x) when x in [:undefined, nil], do: nil
   def load(R.font(name: :undefined)), do: nil
   def load(R.font(name: name, style: style, weight: weight, size: size)) do
     font = :wxFont.new()
