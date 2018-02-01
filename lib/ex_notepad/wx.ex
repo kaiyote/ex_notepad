@@ -536,7 +536,7 @@ defmodule ExNotepad.Wx do
 
   @spec set_icon(:wxFrame.wxFrame()) :: :ok
   defp set_icon(frame) do
-    priv_dir = ExNotepad |> :code.priv_dir() |> List.to_string()
+    priv_dir = "" #ExNotepad |> :code.priv_dir() |> List.to_string()
     case File.dir? priv_dir do
       true -> set_icon_from_file frame, priv_dir, "icon.ico"
       false -> set_icon_from_script frame, Path.join(["ex_notepad", "ebin", "icon32.raw"])

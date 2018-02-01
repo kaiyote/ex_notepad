@@ -24,7 +24,7 @@ defmodule ExNotepad.Text do
         :wxStyledTextCtrl.styleSetFont text_ctrl, :wx_const.wxSTC_STYLE_DEFAULT, f
         Font.destroy f
       _ ->
-        :wxStyledTextCtrl.styleSetFont text_ctrl, :wx_const.wxSTC_STYLE_DEFAULT, font
+        :ok#:wxStyledTextCtrl.styleSetFont text_ctrl, :wx_const.wxSTC_STYLE_DEFAULT, font
     end
 
     :wxStyledTextCtrl.setSelBackground text_ctrl, true, {00, 0x78, 0xd7}
