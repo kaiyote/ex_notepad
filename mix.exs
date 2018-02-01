@@ -8,7 +8,8 @@ defmodule ExNotepad.Mixfile do
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       deps: deps(),
-      dialyzer: [plt_add_apps: [:wx]]
+      dialyzer: [plt_add_apps: [:wx]],
+      escript: [main_module: ExNotepad]
     ]
   end
 
