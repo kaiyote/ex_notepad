@@ -9,7 +9,7 @@ defmodule ExNotepad.Mixfile do
       start_permanent: Mix.env == :prod,
       deps: deps(),
       dialyzer: [plt_add_apps: [:wx]],
-      escript: [main_module: ExNotepad]
+      escript: [main_module: ExNotepad, app: nil]
     ]
   end
 

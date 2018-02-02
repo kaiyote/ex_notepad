@@ -8,14 +8,12 @@ defmodule ExNotepad do
 
   @spec main(list()) :: any()
   def main([]) do
-    Application.load ExNotepad
     case Wx.start_link() do
       {:error, _} = err -> show_error err
       exnotepad -> Wx.wait_forever exnotepad
     end
   end
   def main([filename]) do
-    Application.load ExNotepad
     case Wx.start_link filename do
       {:error, _} = err -> show_error err
       exnotepad -> Wx.wait_forever exnotepad
