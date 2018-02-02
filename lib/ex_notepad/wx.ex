@@ -1,8 +1,5 @@
 defmodule ExNotepad.Wx do
   @moduledoc false
-  @dialyzer {:nowarn_function, 'MACRO-menu_event': 2}
-  @dialyzer {:nowarn_function, 'MACRO-menu_event': 3}
-  @dialyzer {:nowarn_function, 'MACRO-is_missing': 2}
 
   use Bitwise, only_operators: true
 

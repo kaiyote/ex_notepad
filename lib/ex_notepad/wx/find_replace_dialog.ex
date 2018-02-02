@@ -1,6 +1,5 @@
 defmodule ExNotepad.Wx.FindReplaceDialog do
   @moduledoc false
-  @dialyzer {:nowarn_function, 'MACRO-button_clicked': 2}
 
   require ExNotepad.Records
   alias ExNotepad.Records, as: R

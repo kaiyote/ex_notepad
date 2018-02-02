@@ -1,6 +1,5 @@
 defmodule ExNotepad.Text do
   @moduledoc false
-  @dialyzer {:nowarn_function, 'MACRO-assign': 4}
 
   use Bitwise, only_operators: true
 
